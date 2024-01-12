@@ -15,10 +15,8 @@ export default function () {
 function ProductsList() {
     const { data: productData, isFetching } = useGetProductsQuery();
     const queryParameters = new URLSearchParams(window.location.search);
-    const id = queryParameters.get("id")
-
+    const id = queryParameters.get("id");
     const { data: commentData, isLoading } = useGetProductsCommentsQuery(id);
-    console.log(commentData);
 
     return <div>
         {
@@ -32,7 +30,7 @@ function ProductsList() {
                         {
                             isLoading ? <p>loading</p> :
                                 commentData.map(comment => (
-                                    <p>{comment.comment}</p>
+                                    <p>{comment.comment} par <strong>{comment.username}</strong></p>
                                 ))
                         }
                     </div>
