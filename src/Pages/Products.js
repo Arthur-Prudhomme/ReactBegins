@@ -1,13 +1,11 @@
-import { useGetProductsQuery } from "../Services/API"
+import { useGetProductsQuery, useGetProductsCommentsQuery } from "../Services/API"
 import styled from 'styled-components';
 
 export default function () {
     let { data, isFetching } = useGetProductsQuery();
     return <div>
-        <h1>Products</h1>
         {
             isFetching ? <p>loading</p> : <div>
-                <br />
                 <ProductsList />
             </div>
         }
@@ -15,18 +13,29 @@ export default function () {
 }
 
 function ProductsList() {
-    let { data, isFetching } = useGetProductsQuery();
+    const { data: productData, isFetching } = useGetProductsQuery();
     const queryParameters = new URLSearchParams(window.location.search);
     const id = queryParameters.get("id")
 
+    const { data: commentData, isLoading } = useGetProductsCommentsQuery(id);
+    console.log(commentData);
+
     return <div>
         {
-            data.filter((products) => (
+            productData.filter((products) => (
                 products.id === id
             )).map(p => (
                 <div>
+                    <h1>{p.title}</h1>
                     <img src={p.image} /><br />
-                    <h3>{p.title}</h3>
+                    <div>
+                        {
+                            isLoading ? <p>loading</p> :
+                                commentData.map(comment => (
+                                    <p>{comment.comment}</p>
+                                ))
+                        }
+                    </div>
                 </div>
             ))
         }
