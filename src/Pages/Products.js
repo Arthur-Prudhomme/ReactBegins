@@ -1,9 +1,26 @@
-import { useGetProductsQuery, useGetProductsCommentsQuery } from "../Services/API"
+import { useGetProductsQuery, useGetProductsCommentsQuery, useCreateProductsCommentsMutation } from "../Services/API"
 import styled from 'styled-components';
 
 export default function () {
     let { data, isFetching } = useGetProductsQuery();
+    let [createComment, { isLoading }] = useCreateProductsCommentsMutation()
+
+    const queryParameters = new URLSearchParams(window.location.search);
+    const id = queryParameters.get("id");
+
+    const params = {
+        id: id,
+        body: {
+            username: 'rtuuur',
+            comment: 'test commentaire'
+        }
+    };
+
     return <div>
+        <button onClick={() => {
+            createComment(params)
+        }}>create comment</button>
+
         {
             isFetching ? <p>loading</p> : <div>
                 <ProductsList />
@@ -38,4 +55,8 @@ function ProductsList() {
             ))
         }
     </div>
+}
+
+function PostComment() {
+
 }
