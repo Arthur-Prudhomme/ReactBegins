@@ -1,9 +1,10 @@
 import { useGetProductsQuery, useGetProductsCommentsQuery, useCreateProductsCommentsMutation } from "../Services/API"
 import styled from 'styled-components';
+import { useBasket } from '../Contexts/BasketContext';
 
 export default function () {
     let { data, isFetching } = useGetProductsQuery();
-    let [createComment, { isLoading }] = useCreateProductsCommentsMutation()
+    let [createComment, { isLoading }] = useCreateProductsCommentsMutation();
 
     const queryParameters = new URLSearchParams(window.location.search);
     const id = queryParameters.get("id");
@@ -11,8 +12,8 @@ export default function () {
     const params = {
         id: id,
         body: {
-            username: 'rtuuur',
-            comment: 'test commentaire'
+            username: 'test',
+            comment: 'commentaire test 4'
         }
     };
 
@@ -35,6 +36,11 @@ function ProductsList() {
     const id = queryParameters.get("id");
     const { data: commentData, isLoading } = useGetProductsCommentsQuery(id);
 
+    const { state, addToBasket, emptyBasket } = useBasket();
+    const handleAddToBasket = (product) => {
+        addToBasket(product);
+    };
+
     return <div>
         {
             productData.filter((products) => (
@@ -51,12 +57,19 @@ function ProductsList() {
                                 ))
                         }
                     </div>
+
+                    <div>
+                        <button onClick={() => handleAddToBasket(p)}>Add to Cart</button>
+                    </div>
+                    <h2>Basket</h2>
+                    <ul>
+                        {state.items.map(item => (
+                            <li key={item}>{item.title}</li>
+                        ))}
+                    </ul>
+                    <button onClick={emptyBasket}>Empty Cart</button>
                 </div>
             ))
         }
     </div>
-}
-
-function PostComment() {
-
 }
