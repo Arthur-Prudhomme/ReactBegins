@@ -6,21 +6,60 @@ const initialState = {
     items: [],
 };
 
+// const reducer = (state, action) => {
+//     switch (action.type) {
+//         case 'ADD_TO_BASKET':
+//             const updatedItems = [...state.items, action.payload];
+//             localStorage.setItem('basket', JSON.stringify(updatedItems));
+//             return {
+//                 ...state,
+//                 items: updatedItems,
+//             };
+//         case 'EMPTY_BASKET':
+//             localStorage.removeItem('basket');
+//             return {
+//                 ...state,
+//                 items: [],
+//             };
+//         default:
+//             return state;
+//     }
+// };
+
 const reducer = (state, action) => {
     switch (action.type) {
         case 'ADD_TO_BASKET':
-            const updatedItems = [...state.items, action.payload];
-            localStorage.setItem('basket', JSON.stringify(updatedItems));
-            return {
-                ...state,
-                items: updatedItems,
-            };
+            const newItem = action.payload;
+            const existingItemIndex = state.items.findIndex(itemObj => itemObj.item.id === newItem.id);
+
+            if (existingItemIndex !== -1) {
+                const updatedItems = [...state.items];
+                updatedItems[existingItemIndex] = {
+                    item: newItem,
+                    quantity: updatedItems[existingItemIndex].quantity + 1,
+                };
+                localStorage.setItem('basket', JSON.stringify(updatedItems));
+                const test = {
+                    ...state,
+                    items: updatedItems,
+                }
+                return test;
+            } else {
+                const updatedItems = [...state.items, { item: newItem, quantity: 1 }];
+                localStorage.setItem('basket', JSON.stringify(updatedItems));
+                return {
+                    ...state,
+                    items: updatedItems,
+                };
+            }
+
         case 'EMPTY_BASKET':
             localStorage.removeItem('basket');
             return {
                 ...state,
                 items: [],
             };
+
         default:
             return state;
     }

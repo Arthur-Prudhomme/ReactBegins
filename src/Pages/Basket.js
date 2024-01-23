@@ -19,8 +19,11 @@ function BasketContent() {
             <div>
                 <h2>Basket</h2>
                 <ul>
-                    {state.items.map(item => (
-                        <li key={item}>{item.title}</li>
+                    {state.items.map((itemObj, index) => (
+
+                        <li key={index}>
+                            {itemObj.item.title} - Quantity: {itemObj.quantity}
+                        </li>
                     ))}
                 </ul>
                 <button onClick={emptyBasket}>Empty Cart</button>
