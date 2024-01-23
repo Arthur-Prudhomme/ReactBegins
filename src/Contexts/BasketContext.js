@@ -45,12 +45,20 @@ const reducer = (state, action) => {
                 }
                 return test;
             } else {
-                const updatedItems = [...state.items, { item: newItem, quantity: 1 }];
-                localStorage.setItem('basket', JSON.stringify(updatedItems));
-                return {
-                    ...state,
-                    items: updatedItems,
-                };
+                if (Array.isArray(newItem) && newItem.every(itemObj => 'item' in itemObj && 'quantity' in itemObj)) {
+                    return {
+                        ...state,
+                        items: newItem,
+                    };
+                } else {
+                    const updatedItems = [...state.items, { item: newItem, quantity: 1 }];
+                    localStorage.setItem('basket', JSON.stringify(updatedItems));
+                    return {
+                        ...state,
+                        items: updatedItems,
+                    };
+                }
+
             }
 
         case 'EMPTY_BASKET':
