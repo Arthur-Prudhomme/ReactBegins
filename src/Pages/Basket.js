@@ -14,7 +14,7 @@ export default function () {
         {
             <Global>
                 {
-                    totalItems > 0 ? <Button onClick={emptyBasket}>Vider le Panier</Button> : <p></p>
+                    totalItems > 0 ? <Button onClick={emptyBasket}>Vider le Panier</Button> : <p>Rien dans votre panier</p>
                 }
 
                 <BasketCardList>
@@ -34,7 +34,7 @@ function BasketContent() {
         <BasketCard><Link className={"removeLinkStyle"} to={'/products?id=' + itemObj.item.id}>
             <img src={itemObj.item.image} />
             <div>
-                <h3>{itemObj.item.title} - x{itemObj.quantity}</h3>
+                <h3>{itemObj.item.title} | x{itemObj.quantity}</h3>
                 <h4>{itemObj.item.price}€</h4>
             </div>
         </Link></BasketCard>
