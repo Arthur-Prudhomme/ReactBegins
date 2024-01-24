@@ -80,8 +80,6 @@ function ProductsList() {
     };
 
     return <div>
-
-
         {
             productData.filter((products) => (
                 products.id === id
@@ -92,7 +90,7 @@ function ProductsList() {
                             <img src={p.image} />
                         </div>
                         <div>
-                            <h1>{p.title} - {p.price}€</h1>
+                            <h1>{p.title} | {p.price}€</h1>
                             <h2>En stock : {p.quantity}</h2>
                             <Button onClick={() => handleAddToBasket(p)}>Ajouter au panier</Button>
                         </div>
