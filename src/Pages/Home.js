@@ -7,16 +7,18 @@ export default function () {
     let { data, isFetching } = useGetProductsQuery();
 
     return <div>
-        <Navbar />
-        <h1>Products</h1>
-        {
-            isFetching ? <p>loading</p> :
-                <div>
-                    <ProductsCardList>
-                        <ProductsList />
-                    </ProductsCardList>
-                </div>
-        }
+        <Global>
+            <Navbar />
+            <h1>Products</h1>
+            {
+                isFetching ? <p>loading</p> :
+                    <div>
+                        <ProductsCardList>
+                            <ProductsList />
+                        </ProductsCardList>
+                    </div>
+            }
+        </Global>
     </div>
 }
 
@@ -26,10 +28,12 @@ function ProductsList() {
     return data.map((products) => {
         const link = '/products?id=' + products.id;
 
-        return <ProductCard><Link to={link}>
+        return <ProductCard><Link className={"removeLinkStyle"} to={link}>
             <img src={products.image} /><br />
-            <h2>{products.title}</h2>
-            <h3>{products.price}€</h3>
+            <div>
+                <h3>{products.title}</h3>
+                <h4>{products.price}€</h4>
+            </div>
         </Link></ProductCard>
     })
 }
@@ -43,13 +47,25 @@ img{
 }
 padding:15px;
 border-radius:15px;
--webkit-box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.2); 
-box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.2);
+
+-webkit-box-shadow: 5px 5px 15px 1px rgba(0,0,0,0.15); 
+box-shadow: 5px 5px 15px 1px rgba(0,0,0,0.15);
+
+.removeLinkStyle{
+    text-decoration:none!important;
+    color:black;
+}
 
 &:hover{
 }
 `
 const ProductsCardList = styled.div`
 display:flex;
+justify-content:center;
 gap:25px;
+`
+const Global = styled.div`
+display:flex;
+flex-direction:column;
+text-align:center;
 `
