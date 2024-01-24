@@ -1,6 +1,7 @@
 import { useGetProductsQuery, useGetProductsCommentsQuery, useCreateProductsCommentsMutation } from "../Services/API"
 import styled from 'styled-components';
 import { useBasket } from '../Contexts/BasketContext';
+import Navbar from '../Components/Navbar';
 
 export default function () {
     let { data, isFetching } = useGetProductsQuery();
@@ -18,6 +19,7 @@ export default function () {
     };
 
     return <div>
+        <Navbar />
         <button onClick={() => {
             createComment(params)
         }}>create comment</button>
@@ -49,6 +51,7 @@ function ProductsList() {
                 <div>
                     <h1>{p.title}</h1>
                     <img src={p.image} /><br />
+                    <button onClick={() => handleAddToBasket(p)}>Ajouter au panier</button>
                     <div>
                         {
                             isLoading ? <p>loading</p> :
@@ -57,19 +60,6 @@ function ProductsList() {
                                 ))
                         }
                     </div>
-
-                    <div>
-                        <button onClick={() => handleAddToBasket(p)}>Add to Cart</button>
-                    </div>
-                    <h2>Basket</h2>
-                    <ul>
-                        {state.items.map((itemObj, index) => (
-                            <li key={index}>
-                                {itemObj.item.title} - Quantity: {itemObj.quantity}
-                            </li>
-                        ))}
-                    </ul>
-                    <button onClick={emptyBasket}>Empty Cart</button>
                 </div>
             ))
         }

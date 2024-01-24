@@ -1,16 +1,21 @@
 import { useGetProductsQuery } from "../Services/API"
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import Navbar from '../Components/Navbar';
 
 export default function () {
     let { data, isFetching } = useGetProductsQuery();
 
-    return <div><h1>Products</h1>
+    return <div>
+        <Navbar />
+        <h1>Products</h1>
         {
-            isFetching ? <p>loading</p> : <div>
-                <ProductsCardList>
-                    <ProductsList />
-                </ProductsCardList>
-            </div>
+            isFetching ? <p>loading</p> :
+                <div>
+                    <ProductsCardList>
+                        <ProductsList />
+                    </ProductsCardList>
+                </div>
         }
     </div>
 }
@@ -19,11 +24,13 @@ function ProductsList() {
     let { data, isFetching } = useGetProductsQuery();
 
     return data.map((products) => {
-        return <ProductCard href={'http://localhost:3000/products?id=' + products.id}>
+        const link = '/products?id=' + products.id;
+
+        return <ProductCard><Link to={link}>
             <img src={products.image} /><br />
             <h2>{products.title}</h2>
             <h3>{products.price}€</h3>
-        </ProductCard>
+        </Link></ProductCard>
     })
 }
 
