@@ -2,43 +2,73 @@ import { useGetProductsQuery, useGetProductsCommentsQuery, useCreateProductsComm
 import styled from 'styled-components';
 import { useBasket } from '../Contexts/BasketContext';
 import Navbar from '../Components/Navbar';
+import React, { useState } from 'react';
 
 export default function () {
     let { data, isFetching } = useGetProductsQuery();
-    let [createComment, { isLoading }] = useCreateProductsCommentsMutation();
-
-    const queryParameters = new URLSearchParams(window.location.search);
-    const id = queryParameters.get("id");
-
-    const params = {
-        id: id,
-        body: {
-            username: 'test',
-            comment: 'commentaire test 4'
-        }
-    };
 
     return <div>
         <Navbar />
-        <button onClick={() => {
-            createComment(params)
-        }}>create comment</button>
-
         {
             isFetching ? <p>loading</p> : <div>
                 <ProductsList />
+                <Comments />
             </div>
         }
     </div>
 }
 
-function ProductsList() {
-    const { data: productData, isFetching } = useGetProductsQuery();
+function Comments() {
+    const [createComment] = useCreateProductsCommentsMutation();
+    const [commentText, setCommentText] = useState('');
+
     const queryParameters = new URLSearchParams(window.location.search);
     const id = queryParameters.get("id");
     const { data: commentData, isLoading } = useGetProductsCommentsQuery(id);
 
-    const { state, addToBasket, emptyBasket } = useBasket();
+    const handleInputChange = (event) => {
+        setCommentText(event.target.value);
+    };
+
+    const handleCreateComment = () => {
+        const params = {
+            id: id,
+            body: {
+                username: 'default',
+                comment: commentText
+            }
+        };
+        createComment(params);
+        setCommentText('');
+    };
+
+    return (
+        <div>
+            <input
+                type="text"
+                value={commentText}
+                onChange={handleInputChange}
+                placeholder="Votre commentaire"
+            />
+            <button onClick={handleCreateComment}>Ajouter</button>
+            <div>
+                {
+                    isLoading ? <p>loading</p> :
+                        commentData.map(comment => (
+                            <p>{comment.comment} par <strong>{comment.username}</strong></p>
+                        ))
+                }
+            </div>
+        </div>
+    );
+}
+
+function ProductsList() {
+    const { data: productData } = useGetProductsQuery();
+    const queryParameters = new URLSearchParams(window.location.search);
+    const id = queryParameters.get("id");
+
+    const { addToBasket } = useBasket();
     const handleAddToBasket = (product) => {
         addToBasket(product);
     };
@@ -52,14 +82,6 @@ function ProductsList() {
                     <h1>{p.title}</h1>
                     <img src={p.image} /><br />
                     <button onClick={() => handleAddToBasket(p)}>Ajouter au panier</button>
-                    <div>
-                        {
-                            isLoading ? <p>loading</p> :
-                                commentData.map(comment => (
-                                    <p>{comment.comment} par <strong>{comment.username}</strong></p>
-                                ))
-                        }
-                    </div>
                 </div>
             ))
         }

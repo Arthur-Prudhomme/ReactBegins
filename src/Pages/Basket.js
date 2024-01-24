@@ -17,16 +17,16 @@ function BasketContent() {
     return <div>
         {
             <div>
-                <h2>Basket</h2>
+                <h2>Panier</h2>
                 <ul>
                     {state.items.map((itemObj, index) => (
 
                         <li key={index}>
-                            {itemObj.item.title} - Quantity: {itemObj.quantity}
+                            {itemObj.item.title} - x{itemObj.quantity}
                         </li>
                     ))}
                 </ul>
-                <button onClick={emptyBasket}>Empty Cart</button>
+                <button onClick={emptyBasket}>Vider le Panier</button>
             </div>
         }
     </div>
