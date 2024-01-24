@@ -7,8 +7,9 @@ export default function () {
     let { data, isFetching } = useGetProductsQuery();
 
     return <div>
+
+        <Navbar />
         <Global>
-            <Navbar />
             <h1>Products</h1>
             {
                 isFetching ? <p>loading</p> :

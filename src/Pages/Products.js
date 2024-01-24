@@ -60,7 +60,7 @@ function Comments() {
                         commentData.map(comment => (
                             <Comment>
                                 <h3><strong>{comment.username}</strong></h3>
-                                <p>{comment.comment}</p>
+                                <p>{comment.comment.length > 150 ? comment.comment.substr(0, 150) + '...' : comment.comment}</p>
                             </Comment>
                         ))
                 }
@@ -123,9 +123,9 @@ box-shadow: 5px 5px 15px 1px rgba(0,0,0,0.15);
 
 const Global = styled.div`
 height:auto;
-width:auto;
+width:fit-content;
 display:flex;
-maring:auto;
+margin:auto;
 gap:5%;
 
 padding:15px;
@@ -141,6 +141,10 @@ border-radius:15px;
 p,h3{
     margin:0;
 }
+p{
+    line-break: strict;
+    word-wrap: break-word;
+}
 
 -webkit-box-shadow: 5px 5px 15px 1px rgba(0,0,0,0.15); 
 box-shadow: 5px 5px 15px 1px rgba(0,0,0,0.15);
@@ -151,6 +155,7 @@ display:flex;
 flex-direction:column;
 border-radius:15px;
 gap:15px;
+width:30vw;
 `
 
 const Button = styled.button`
@@ -173,6 +178,7 @@ border-radius: 5px;
 `;
 
 const CommentActions = styled.div`
-  display:flex;
-  justify-content:space-between;
+display:flex;
+justify-content:space-between;
+margin-bottom:10px;
 `;
