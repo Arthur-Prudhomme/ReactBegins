@@ -10,9 +10,9 @@ export default function () {
 
         <Navbar />
         <Global>
-            <h1>Products</h1>
+            <h1>Produits</h1>
             {
-                isFetching ? <p>loading</p> :
+                isFetching ? <p>CHARGEMENT</p> :
                     <div>
                         <ProductsCardList>
                             <ProductsList />
@@ -24,7 +24,7 @@ export default function () {
 }
 
 function ProductsList() {
-    let { data, isFetching } = useGetProductsQuery();
+    let { data } = useGetProductsQuery();
 
     return data.map((products) => {
         const link = '/products?id=' + products.id;

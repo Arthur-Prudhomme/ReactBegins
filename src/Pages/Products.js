@@ -10,7 +10,7 @@ export default function () {
     return <div>
         <Navbar />
         {
-            isFetching ? <p>loading</p> : <Global>
+            isFetching ? <p>CHARGEMENT</p> : <Global>
                 <ProductsList />
                 <Comments />
             </Global>

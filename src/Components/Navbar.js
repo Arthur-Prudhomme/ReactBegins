@@ -13,7 +13,7 @@ const Navbar = () => {
             <nav>
                 <NavBar>
                     <Link className={"removeLinkStyle"} to='/home'>
-                        <h2>Acceuil</h2>
+                        <h2>Accueil</h2>
                     </Link>
                     <Link className={"removeLinkStyle"} to='/basket'>
                         <h2>Panier : {totalItems}</h2>
